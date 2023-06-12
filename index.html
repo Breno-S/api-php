@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/index.css">
     <title>Autenticação de API</title>
 </head>
 <body>
     <header>
-        <img src="img/logo.png" alt="logomarca">
-        <h1>Autenticação de API</h1>
+        <div>
+            <img src="img/logo.png" alt="logomarca">
+            <h1>Autenticação de API</h1>
+        </div>
+        <a href="enviar-pfp.php">Mudar Foto de perfil</a>
     </header>
 
     <!-- Formulário de login -->
@@ -28,6 +32,10 @@
         <pre class="response" id="response-users"></pre>
         <h2>Produtos</h2>
         <pre class="response" id="response-products"></pre>
+        <h3>Imagens</h2>
+        <div class="response" id="imagens-produtos">
+
+        </div>
     </div>
 
     <script>
@@ -72,6 +80,21 @@
             .then(response => response.json()) // Converter a resposta em JSON
             .then(data => {
                 responseProducts.textContent = JSON.stringify(data, null, 2); // Exibir a resposta da API na div
+                let products = data.products;
+
+                let divImages = document.getElementById("imagens-produtos")
+                
+                for (let i = 0; i < products.length; i++) {
+                    imgUrl = products[i].imageUrl;
+                    
+                    newImg = document.createElement("img");
+                    newBr = document.createElement("br");
+                    newImg.src = imgUrl;
+
+                    divImages.insertBefore(newImg, divImages.childNodes[0]);
+                    divImages.insertBefore(newBr, divImages.childNodes[0]);
+                    
+                }
             })
             .catch(error => {
                 responseProducts.textContent = 'Erro ao fazer a solicitação: ' + error.message; // Exibir mensagem de erro
