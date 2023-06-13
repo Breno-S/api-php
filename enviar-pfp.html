@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/enviar-pfp.css">
+    <title>Enviar Foto de Perfil</title>
+</head>
+<body>
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <img src="img/logo.png" alt="logomarca"><span class="fs-4">Autenticação de API</span>
+        </a>
+  
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a href="index.html" class="nav-link" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="" class="nav-link active" >Perfil</a></li>
+        </ul>
+        <img src="" alt="">
+    </header>
+
+    <!-- Formulário de login e envio de foto de perfil -->
+    <form id="loginForm" class="cont-form">
+        <label for="username">Usuário:</label>
+        <input type="text" id="username" name="username"><br>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password"><br>
+
+        <label for="imageFile">Escolher imagem:</label>
+        <input type="file" class="form-control-file" id="imageFile" name="imageFile">
+
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const responseUsers = document.querySelector('#response-users');
+    const responseProducts = document.querySelector('#response-products');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Obter os valores digitados pelo usuário
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Concatenar usuário e senha em uma string
+        const credentials = `${username}:${password}`;
+
+        // Codificar as credenciais para o formato Base64
+        const encodedCredentials = btoa(credentials);
+
+        // Get the selected image file
+        const fileInput = document.getElementById('imageFile');
+        const file = fileInput.files[0];
+
+        // Create FormData object and append the file to it
+        const formData = new FormData();
+        formData.append('imageFile', file);
+        
+        // Fazer uma solicitação HTTP para a API
+        fetch('http://localhost/api-php/api.php/?endpoint=users/profile-image', {
+            method: "POST",
+            headers: {
+                'Authorization': `Basic ${encodedCredentials}` // Incluir as credenciais no cabeçalho da solicitação
+            },
+            body: formData,
+        })
+        .then(response => response.json()) // Converter a resposta em JSON
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

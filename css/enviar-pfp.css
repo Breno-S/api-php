@@ -1,31 +1,46 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+header {
+    padding-left: 1em;
+    padding-right: 1em;
+    background-color: #ddd;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header img {
+    height: 50px;
 }
 
 h1 {
     text-align: center;
-    margin-top: 40px;
 }
 
 .container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
+    padding: 1em;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
 .response {
-    margin-top: 20px;
+    margin: 1em 0;
     padding: 10px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+div.response {
+    white-space: normal;
+    word-wrap: normal;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin: 1em;
 }
 
 .cont-form{
