@@ -145,9 +145,13 @@ if ($method == 'POST') {
             $tempPath = $_FILES['imageFile']['tmp_name'];
             $originalFilename = $_FILES['imageFile']['name'];
 
-            // Salve o arquivo em algum diretório
-            $targetPath = './img/uploads/' . $originalFilename;
-            move_uploaded_file($tempPath, $targetPath);
+            // // Salve o arquivo em algum diretório
+            // $targetPath = './img/uploads/' . $originalFilename;
+            // move_uploaded_file($tempPath, $targetPath);
+
+            // Obtenha os valores dos outros dados do formulário
+            $email = $_POST['email'];
+            $senha = $_POST['senha'];
 
             $response = array(
                 'status' => 'success',
@@ -155,12 +159,12 @@ if ($method == 'POST') {
             );
 
             // Obter o conteúdo binário do arquivo
-            $imageData = file_get_contents($targetPath);
+            $imageData = file_get_contents($tempPath);
 
             // Preparar a consulta SQL para inserir os dados na tabela
-            $sql = "UPDATE users SET profile_picture = (?) WHERE id = 1 ";
+            $sql = "UPDATE users SET profile_picture = (?) WHERE email = (?) AND password = (?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("s", $imageData);
+            $stmt->bind_param("sss", $imageData, $email, $senha);
             $stmt->execute();
 
             // Verificar se a inserção foi bem-sucedida
