@@ -2,36 +2,42 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="css/index.css">
     <title>Autenticação de API</title>
 </head>
 <body>
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <img src="img/logo.png" alt="logomarca"><span class="fs-4">Autenticação de API</span>
-        </a>
-  
-        <ul class="nav nav-pills">
-          <li class="nav-item"><a href="" class="nav-link active" aria-current="page">Home</a></li>
-          <li class="nav-item"><a href="enviar-pfp.html" class="nav-link">Perfil</a></li>
-        </ul>
-        <img src="" alt="">
-    </header>
+    <div class="container ">
+        <header class="d-flex flex-column flex-wrap justify-content-between align-items-center mb-4 border-bottom p-2">
+            <a href="" class="d-flex align-items-center text-dark text-decoration-none" id="logo">
+                <img src="img/logo.png" alt="logomarca"><span class="fs-4">Autenticação de API</span>
+            </a>
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a href="" class="nav-link active" aria-current="page">Home</a></li>
+              <li class="nav-item"><a href="enviar-pfp.html" class="nav-link">Perfil</a></li>
+            </ul>
+        </header>
+    </div>
 
     <!-- Formulário de login -->
-    <form id="loginForm" class="cont-form">
-        <label for="username">Usuário:</label>
-        <input type="text" id="username" name="username"><br>
+    <form class="container form-container section-container" id="loginForm">
+        <div class="form-group" >
+          <label for="username"><b>Usuário</b></label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu username" autofocus>
+        </div>
 
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password"><br>
+        <div class="form-group">
+          <label for="password"><b>Senha</b></label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Senha">
+        </div>
 
-        <button type="submit">Consultar</button>
+        <button type="submit" class="btn btn-primary container-fluid">Consultar</button>
     </form>
 
     <!-- Div para exibir a resposta da API -->
-    <div id="response" class="container">
+    <div id="response" class="container section-container">
         <h1>Resposta da consulta</h1>
         <h2>Usuários</h2>
         <pre class="response" id="response-users"></pre>
@@ -101,7 +107,7 @@
                         <img class="card-img-top" src="${imgUrl}" alt="${productName}">
                         <div class="card-body">
                             <h5 class="card-title">${productName}</h5>
-                            <p class="card-text"><b>ID:</b>${productId}</p>
+                            <p class="card-text"><b>ID: </b>${productId}</p>
                         </div>
                     </div>
                     `;
@@ -110,8 +116,8 @@
                 
             })
             .catch(error => {
-                responseProducts.textContent = 'Erro ao fazer a solicitação: ' + error.message; // Exibir mensagem de erro
-                responseImages.textContent = 'Erro ao fazer a solicitação: ' + error.message; // Exibir mensagem de erro
+                responseProducts.textContent = 'Erro ao fazer a solicitação'; // Exibir mensagem de erro
+                responseImages.textContent = 'Erro ao fazer a solicitação'; // Exibir mensagem de erro
             });
 
         });
