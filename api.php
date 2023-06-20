@@ -12,8 +12,10 @@ $senhaPermitida = 'admin';
 // Verifica as credenciais fornecidas pelo cliente
 if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW']) ||
     $_SERVER['PHP_AUTH_USER'] !== $usuarioPermitido || $_SERVER['PHP_AUTH_PW'] !== $senhaPermitida) {
+    
     // Credenciais inválidas, retorna erro de autenticação
     header('HTTP/1.0 401 Unauthorized');
+    
     $response = array(
         'status' => 'error',
         'message' => 'Credenciais inválidas'
@@ -39,12 +41,19 @@ if ($conn->connect_error) {
         'status' => 'error',
         'message' => 'Failed to connect to MySQL: ' . $conn->connect_error
     );
+    
     echo json_encode($response);
+
+    // Feche a conexão com o banco de dados
+    $conn->close();
     exit;
 }
 
 // Verifique o método da requisição
 $method = $_SERVER['REQUEST_METHOD'];
+
+// Verifique o endpoint solicitado
+$endpoint = $_GET['endpoint'];
 
 // Defina a resposta padrão
 $response = array(
@@ -54,12 +63,6 @@ $response = array(
 
 // Verifique o método e o endpoint para executar a lógica da API
 if ($method == 'GET') {
-
-    // Verifique o endpoint solicitado
-    $endpoint = $_GET['endpoint'];
-
-    // Verifique os parâmetros da requisição
-    $params = $_GET;
 
     if ($endpoint == 'users') {
         // Execute a consulta para obter os dados dos usuários
@@ -97,7 +100,7 @@ if ($method == 'GET') {
     }
 
     if ($endpoint == 'products/images') {
-        // Execute a consulta para obter os dados dos usuários
+        // Execute a consulta para obter os dados dos produtos
         $sql = "SELECT * FROM products";
         $result = $conn->query($sql);
         
@@ -105,7 +108,7 @@ if ($method == 'GET') {
         if ($result->num_rows > 0) {
             $products = array();
 
-            // Itere pelos resultados e adicione os usuários ao array
+            // Itere pelos resultados e adicione os produtos ao array
             while ($row = $result->fetch_assoc()) {
 
                 $product = array(
@@ -136,46 +139,51 @@ if ($method == 'GET') {
 }
 
 if ($method == 'POST') {
-    // Verifique o endpoint solicitado
-    $endpoint = $_POST['endpoint'];
-
-    // Verifique os parâmetros da requisição
-    $params = $_POST;
-
     if ($endpoint == 'users/profile-image') {
         // Verifica se o arquivo foi enviado corretamente
         if (isset($_FILES['imageFile']) && $_FILES['imageFile']['error'] === UPLOAD_ERR_OK) {
-            $targetDir = './uploads';
-            $targetFile = $targetDir . basename($_FILES['imageFile']['name']);
-            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            $tempPath = $_FILES['imageFile']['tmp_name'];
+            $originalFilename = $_FILES['imageFile']['name'];
 
-            // Verifica se o arquivo é uma imagem
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-            if (in_array($imageFileType, $allowedExtensions)) {
-            
-                // Move o arquivo para o diretório de armazenamento
-                if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $targetFile)) {
+            // Salve o arquivo em algum diretório
+            $targetPath = './img/uploads/' . $originalFilename;
+            move_uploaded_file($tempPath, $targetPath);
 
-                    // Obtém o nome do arquivo
-                    $filename = basename($_FILES['imageFile']['name']);
-                    
-                    // Insere o nome do arquivo na coluna 'profile_picture' da tabela 'users'
-                    $sql = "UPDATE users SET profile_picture = '$filename' WHERE id=1";
+            $response = array(
+                'status' => 'success',
+                'message' => 'Image uploaded successfully',
+            );
 
-                    if ($conn->query($sql) === TRUE) {
-                        echo 'Imagem enviada e inserida no banco de dados com sucesso.';
-                    } else {
-                        echo 'Erro ao inserir a imagem no banco de dados: ' . $conn->error;
-                    }  
-                } else {
-                    echo 'Erro ao mover o arquivo para o diretório de armazenamento.';
-                }
+            // Obter o conteúdo binário do arquivo
+            $imageData = file_get_contents($targetPath);
+
+            // Preparar a consulta SQL para inserir os dados na tabela
+            $sql = "UPDATE users SET profile_picture = (?) WHERE id = 1 ";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $imageData);
+            $stmt->execute();
+
+            // Verificar se a inserção foi bem-sucedida
+            if ($stmt->affected_rows > 0) {
+                $response = array(
+                    'status' => 'success',
+                    'message' => 'Image uploaded and saved to the database',
+                );
             } else {
-                echo 'Apenas arquivos de imagem são permitidos.';
+                $response = array(
+                    'status' => 'error',
+                    'message' => 'Failed to save image to the database',
+                );
             }
+
+            $stmt->close();
         } else {
-            echo 'Erro no envio do arquivo.';
+            $response = array(
+                'status' => 'error',
+                'message' => 'Failed to upload image',
+            );
         }
+
         $conn->close();
     }
 }

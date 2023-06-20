@@ -23,6 +23,7 @@
 
     <!-- Formulário de login -->
     <form class="container form-container section-container" id="loginForm">
+        <h4 class="text-center">Credenciais da API</h4>
         <div class="form-group" >
           <label for="username"><b>Usuário</b></label>
           <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu username" autofocus>
@@ -50,13 +51,13 @@
     </div>
 
     <script>
-        const form = document.getElementById('loginForm');
+        const formAPI = document.getElementById('loginForm');
         const responseUsers = document.querySelector('#response-users');
         const responseProducts = document.querySelector('#response-products');
         const responseImages = document.getElementById("imagens-produtos")
 
 
-        form.addEventListener('submit', function(event) {
+        formAPI.addEventListener('submit', function(event) {
             event.preventDefault();
 
             // Obter os valores digitados pelo usuário
