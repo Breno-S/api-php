@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 06-Jun-2023 às 22:15
+-- Tempo de geração: 20-Jun-2023 às 18:02
 -- Versão do servidor: 10.4.27-MariaDB
--- versão do PHP: 8.0.25
+-- versão do PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -71,34 +71,35 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `email` varchar(128) NOT NULL,
-  `profile_picture` longblob DEFAULT NULL
+  `password` varchar(32) NOT NULL,
+  `profile_picture` longblob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `profile_picture`) VALUES
-(1, 'Wilt', 'wmcglashan0@miitbeian.gov.cn', NULL),
-(2, 'Colly', 'cflanaghan1@ebay.co.uk', NULL),
-(3, 'Charleen', 'cblundel2@sakura.ne.jp', NULL),
-(4, 'Ana', 'agors3@abc.net.au', NULL),
-(5, 'Goldia', 'gsherwood4@yolasite.com', NULL),
-(6, 'Sally', 'smatteotti5@themeforest.net', NULL),
-(7, 'Jeffrey', 'jyegoshin6@columbia.edu', NULL),
-(8, 'Jillana', 'jshields7@uol.com.br', NULL),
-(9, 'Fonz', 'frottger8@blinklist.com', NULL),
-(10, 'Kacy', 'kcalderwood9@blogs.com', NULL),
-(11, 'Lizette', 'lkirkbya@booking.com', NULL),
-(12, 'Lydia', 'lhargreavesb@ucoz.ru', NULL),
-(13, 'Stavro', 'spratec@netlog.com', NULL),
-(14, 'Paco', 'pabrahmd@smugmug.com', NULL),
-(15, 'Murielle', 'mbabee@kickstarter.com', NULL),
-(16, 'Barnabas', 'bmacklamf@plala.or.jp', NULL),
-(17, 'Jeannie', 'jliefg@uol.com.br', NULL),
-(18, 'Felizio', 'fkunch@amazon.com', NULL),
-(19, 'Paulie', 'pschlagi@discuz.net', NULL),
-(20, 'Aleen', 'acanadaj@163.com', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `profile_picture`) VALUES
+(1, 'Wilt', 'wmcglashan0@miitbeian.gov.cn', '12345678', ''),
+(2, 'Colly', 'cflanaghan1@ebay.co.uk', '12345678', ''),
+(3, 'Charleen', 'cblundel2@sakura.ne.jp', '12345678', ''),
+(4, 'Ana', 'agors3@abc.net.au', '12345678', ''),
+(5, 'Goldia', 'gsherwood4@yolasite.com', '12345678', ''),
+(6, 'Sally', 'smatteotti5@themeforest.net', '12345678', ''),
+(7, 'Jeffrey', 'jyegoshin6@columbia.edu', '12345678', ''),
+(8, 'Jillana', 'jshields7@uol.com.br', '12345678', ''),
+(9, 'Fonz', 'frottger8@blinklist.com', '12345678', ''),
+(10, 'Kacy', 'kcalderwood9@blogs.com', '12345678', ''),
+(11, 'Lizette', 'lkirkbya@booking.com', '12345678', ''),
+(12, 'Lydia', 'lhargreavesb@ucoz.ru', '12345678', ''),
+(13, 'Stavro', 'spratec@netlog.com', '12345678', ''),
+(14, 'Paco', 'pabrahmd@smugmug.com', '12345678', ''),
+(15, 'Murielle', 'mbabee@kickstarter.com', '12345678', ''),
+(16, 'Barnabas', 'bmacklamf@plala.or.jp', '12345678', ''),
+(17, 'Jeannie', 'jliefg@uol.com.br', '12345678', ''),
+(18, 'Felizio', 'fkunch@amazon.com', '12345678', ''),
+(19, 'Paulie', 'pschlagi@discuz.net', '12345678', ''),
+(20, 'Aleen', 'acanadaj@163.com', '12345678', '');
 
 --
 -- Índices para tabelas despejadas
